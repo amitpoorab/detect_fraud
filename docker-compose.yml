@@ -1,0 +1,37 @@
+version: "3.7"
+services:
+
+services:
+  db:
+    image: mysql:5
+    env_file:
+      - .env
+    volumes:
+      - ./fraud/data:/docker-entrypoint-initdb.d
+    ports:
+      - "13306:3306"
+
+  fraud:
+    build: 
+      context: ./fraud
+      args:
+        user: $USER     
+    ports:
+    - "8888:8888/tcp"
+    - "4040:4040/tcp"
+    working_dir: /home/$USER/app
+    environment:
+      CHOWN_HOME: "yes"
+      GRANT_SUDO: "yes"
+      NB_UID: 1000
+      NB_GID: 100
+      NB_USER: $USER
+      NB_GROUP: staff
+    user: root   
+    deploy:
+     replicas: 1
+     restart_policy:
+       condition: on-failure
+    volumes:
+      - ./fraud:/home/$USER/app
+    #command: /home/$USER/app/run.sh
