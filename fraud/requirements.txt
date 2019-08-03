@@ -1,0 +1,8 @@
+mysql-connector-python
+pandas
+pymysql
+python-dateutil
+python-editor
+pyspark
+SQLAlchemy
+unittest-xml-reporting
